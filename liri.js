@@ -111,23 +111,26 @@ function movieThis() {
     }
     if (value === -1 || value === undefined) {
         movieName = "Mr Nobody";
+        console.log("_______________");
+        console.log("\nIf you haven't seen Mr Nobody, it's on Netflix!\n")
     }
 
 
 
     var queryUrl = "http://www.omdbapi.com/?t=" + movieName + "&y=&plot=short&apikey=trilogy";
     // console.log(queryUrl);
-    console.log("I think the movie name requested is " + movieName);
+    //console.log("I think the movie name requested is " + movieName);
     request(queryUrl, function (error, response, body) {
 
         // If the request is successful
         if (!error && response.statusCode === 200) {
             console.log("---------------------")
             console.log("The movie's Title is: " + JSON.parse(body).Title);
-            console.log("Release Year: " + JSON.parse(body).Year);
+            console.log("The movie was released in: " + JSON.parse(body).Year);
             console.log("The movie's IMDB rating is: " + JSON.parse(body).imdbRating);
             console.log("The movie's Rotten Tomatoes score is: " + JSON.parse(body).Ratings[1].Value);
-            console.log("The movie's was made in: " + JSON.parse(body).Country);
+            console.log("The movie was made in: " + JSON.parse(body).Country);
+            console.log("The movie's language: " + JSON.parse(body).Language);
             console.log("The movie's plot is: " + JSON.parse(body).Plot);
             console.log("The actors are: " + JSON.parse(body).Actors);
             console.log("---------------------")
