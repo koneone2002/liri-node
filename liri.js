@@ -2,7 +2,7 @@ require("dotenv").config();
 var keys = require("./keys");
 var request = require("request");
 var Twitter = require('twitter');
-
+var fs = require('fs');
 
 var Spotify = require('node-spotify-api');
 var spotify = new Spotify(keys.spotify);
@@ -10,25 +10,27 @@ var client = new Twitter(keys.twitter);
 
 var action = process.argv[2];
 
+function switches(action, value){
+    switch (action) {
+        case "my-tweets":
+            myTweets();
+            break;
+    
+        case "spotify-this-song":
+            spotifySongs(value);
+            break;
+    
+        case "movie-this":
+            movieThis(value);
+            break;
+    
+        case "do-what-it-says":
+            doIt();
+            break;
+    }
 
-switch (action) {
-    case "my-tweets":
-        myTweets();
-        break;
-
-    case "spotify-this-song":
-        spotifySong();
-        break;
-
-    case "movie-this":
-        movieThis();
-        break;
-
-    case "do-what-it-says":
-        doIt();
-        break;
 }
-
+switches(action, process.argv[3]);
 
 // this will show last 20 tweets with timestamp
 function myTweets() {
@@ -53,28 +55,28 @@ function myTweets() {
 }
 // this will return info regarding song including band album link to the song
 // if no title is input it will return 'The Sign' from Ace of Base
-function spotifySong(title) {
+function spotifySongs(songTitle) {
     var nodeArgs = process.argv;
-    var title = process.argv[3];
-  
+    
+    
 
     for (var i = 3; i < nodeArgs.length; i++) {
         if (i > 3 && i < nodeArgs.length) {
-            title = title + "+" + nodeArgs[i];
+            songTitle = songTitle + "+" + nodeArgs[i];
 
         }
        
 
     };
-    if (!title) {
-        title ='The Sign by Ace of Base';
+    if (!songTitle) {
+        songTitle ='The Sign by Ace of Base';
     };
     
 
 
     spotify.search({
         type: 'track',
-        query: title,
+        query: songTitle,
         limit: 1
     }, function (err, data) {
         if (err) {
@@ -97,23 +99,31 @@ function spotifySong(title) {
 }
 // this will return info regarding movie input 
 // if no movie is input it will return Mr Nobody
-function movieThis() {
+function movieThis(value) {
     var nodeArgs = process.argv;
-    var value = process.argv[3];
+   
     var movieName = "";
-
-    for (var i = 3; i < nodeArgs.length; i++) {
-        if (i > 3 && i < nodeArgs.length) {
-            movieName = movieName + "+" + nodeArgs[i];
-        } else {
-            movieName += nodeArgs[i];
-        }
+   
+    if(!process.argv[3]){
+        movieName = value;
     }
-    if (value === -1 || value === undefined) {
+    else {
+        for (var i = 3; i < nodeArgs.length; i++) {
+            if (i > 3 && i < nodeArgs.length) {
+                movieName = movieName + "+" + nodeArgs[i];
+            } else {
+                movieName += nodeArgs[i];
+            }
+        }
+
+    }
+
+    if (value === undefined) {
         movieName = "Mr Nobody";
         console.log("_______________");
         console.log("\nIf you haven't seen Mr Nobody, it's on Netflix!\n")
     }
+
 
 
 
@@ -139,19 +149,49 @@ function movieThis() {
     });
 }
 // this will randomly return one of the above 
-function doIt() {
-    var randomFun = ["my-tweets", "spotify-this-song", "movie-this"];
-    var randomNess = randomFun[Math.floor(Math.random() * randomFun.length)];
-    action = randomNess;
-    console.log("The randomness is " + action);
-    if (action === "movie-this") {
-        movieThis();
-    } else {
-        if (action === "my-tweets") {
-            myTweets();
-        } else {
-            spotifySong()
-        }
+// function doIt() {
+//     var randomFun = ["my-tweets", "spotify-this-song", "movie-this"];
+//     var randomNess = randomFun[Math.floor(Math.random() * randomFun.length)];
+//     action = randomNess;
+//     console.log("The randomness is " + action);
+//     if (action === "movie-this") {
+//         movieThis();
+//     } else {
+//         if (action === "my-tweets") {
+//             myTweets();
+//         } else {
+//             spotifySong()
+//         }
 
-    };
+//     };
+// }
+function doIt() {
+   fs.readFile("random.txt", "utf8", function(err, data){
+       if (err) {
+           return console.log(err);
+       }
+       var random = data.split(",");
+       console.log(random);
+       switches(random[0], random[1]);
+
+   })
 }
+
+function logIt() {
+   
+    var action = process.argv[2] + ", ";
+    for (i = 3; i < process.argv.length; i++) {
+        action += process.argv[i];
+    }
+    action += "\n"
+
+    fs.appendFile("logFile.txt", action, function(err){
+        if(err) {
+            console.log(err);
+        }
+        else {
+            console.log("Content Added");
+        }
+    })
+}
+logIt();
