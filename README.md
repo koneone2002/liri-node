@@ -12,7 +12,7 @@ The user can also enter my-tweets and LIRI will return the last 20 tweets of the
 dotenv - this is the file that holds user spotify and twitter token and secret keys - THE APPLICATION WILL NOT WORK IF THIS FILE IS NOT INCLUDED/CREATED
 
 
-*** THIS APPLICATION REQUIRES:
+*** THIS APPLICATION REQUIRES npm Packages:
 keys
 request
 twitter
