@@ -87,12 +87,10 @@ function spotifySongs(songTitle) {
    
     
         console.log("---------------------")
-        console.log("The Song Name is " + data.tracks.items[0].name);
-        console.log("The Artist is " + data.tracks.items[0].album.artists[0].name);
-        console.log("Listen to the song here " + data.tracks.items[0].external_urls.spotify);
-        console.log("The Album the song appears on is " + data.tracks.items[0].album.name);
+        console.log("The Song Name is: " + data.tracks.items[0].name + "\nThe Artist is: " + data.tracks.items[0].album.artists[0].name + "\nListen to the song here: " + data.tracks.items[0].external_urls.spotify + "\nThe Album the song appears on is: " +
+        data.tracks.items[0].album.name);
         console.log("---------------------")
-        // console.log(JSON.stringify(data, null, 2));
+        
     });
     
 
@@ -128,26 +126,19 @@ function movieThis(value) {
 
 
     var queryUrl = "http://www.omdbapi.com/?t=" + movieName + "&y=&plot=short&apikey=trilogy";
-    // console.log(queryUrl);
-    //console.log("I think the movie name requested is " + movieName);
+   
     request(queryUrl, function (error, response, body) {
 
         // If the request is successful
         if (!error && response.statusCode === 200) {
             console.log("---------------------")
-            console.log("The movie's Title is: " + JSON.parse(body).Title);
-            console.log("The movie was released in: " + JSON.parse(body).Year);
-            console.log("The movie's IMDB rating is: " + JSON.parse(body).imdbRating);
-            console.log("The movie's Rotten Tomatoes score is: " + JSON.parse(body).Ratings[1].Value);
-            console.log("The movie was made in: " + JSON.parse(body).Country);
-            console.log("The movie's language: " + JSON.parse(body).Language);
-            console.log("The movie's plot is: " + JSON.parse(body).Plot);
-            console.log("The actors are: " + JSON.parse(body).Actors);
+            console.log("The movie's Title is: " + JSON.parse(body).Title + "\nThe movie was released in: " + JSON.parse(body).Year + "\nThe movie's IMDB rating is: " + JSON.parse(body).imdbRating + "\nThe movie's Rotten Tomatoes score is: " + JSON.parse(body).Ratings[1].Value + "\nThe movie was made in: " + JSON.parse(body).Country + "\nThe movie's language: " + JSON.parse(body).Language + "\nThe movie's plot is: " + JSON.parse(body).Plot + "\nThe actors are: " + JSON.parse(body).Actors);
             console.log("---------------------")
 
         }
     });
 }
+
 // this will randomly return one of the above 
 // function doIt() {
 //     var randomFun = ["my-tweets", "spotify-this-song", "movie-this"];
@@ -166,13 +157,18 @@ function movieThis(value) {
 //     };
 // }
 function doIt() {
+    
+
    fs.readFile("random.txt", "utf8", function(err, data){
        if (err) {
            return console.log(err);
        }
+     
+      
        var random = data.split(",");
        console.log(random);
        switches(random[0], random[1]);
+       
 
    })
 }
