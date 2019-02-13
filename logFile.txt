@@ -20,3 +20,4 @@ spotify-this-song, callmemaybe
 spotify-this-song, callmemaybe
 movie-this, rambo
 movie-this, sleeplessinseattle
+spotify-this-song, batdance
